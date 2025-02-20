@@ -1,3 +1,11 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+    Boolean darkMode = (Boolean) session.getAttribute("darkMode");
+    if (darkMode == null) {
+        darkMode = false; // Default to light mode if not set
+    }
+%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,13 +18,11 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5KCajCLx1vcTwv72qIUmy7LbrB4e6HJ0&libraries=places"></script>
 
     <style>
-        /* Global Styles */
+        /* Dark Mode Support */
         body {
-            background-color: #f4f4f4;
-            font-family: 'Arial', sans-serif;
-            padding-top: 50px;
-            color: black;
-            overflow-x: hidden;
+            background-color: <%= darkMode ? "#121212" : "#f4f4f4" %>;
+            color: <%= darkMode ? "#ffffff" : "#000000" %>;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         /* Sidebar Styles */
@@ -26,7 +32,7 @@
             left: 0;
             width: 250px;
             height: 100%;
-            background-color: #2c3e50;
+            background-color: <%= darkMode ? "#1e1e1e" : "#2c3e50" %>;
             padding-top: 30px;
             box-shadow: 4px 0px 10px rgba(0, 0, 0, 0.2);
         }
@@ -41,7 +47,7 @@
         }
 
         .sidebar a:hover {
-            background-color: #2980b9;
+            background-color: <%= darkMode ? "#444" : "#2980b9" %>;
             border-radius: 5px;
         }
 
@@ -53,24 +59,16 @@
         }
 
         .card {
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color: <%= darkMode ? "#1e1e1e" : "rgba(255, 255, 255, 0.9)" %>;
+            color: <%= darkMode ? "#ffffff" : "#000000" %>;
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 20px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
-        .card-title {
-            font-size: 1.8rem;
-            color: #333;
-        }
-
-        .card-body {
-            font-size: 1.1rem;
-        }
-
         .btn-custom {
-            background-color: #3498db;
+            background-color: <%= darkMode ? "#444" : "#3498db" %>;
             color: white;
             padding: 12px 20px;
             font-size: 1.1rem;
@@ -80,22 +78,15 @@
         }
 
         .btn-custom:hover {
-            background-color: #2980b9;
+            background-color: <%= darkMode ? "#555" : "#2980b9" %>;
         }
 
         .btn-warning {
-            background-color: #f39c12;
+            background-color: <%= darkMode ? "#e67e22" : "#f39c12" %>;
         }
 
         .btn-warning:hover {
-            background-color: #e67e22;
-        }
-
-        /* Map Container */
-        #map {
-            height: 400px;
-            width: 100%;
-            margin-top: 20px;
+            background-color: <%= darkMode ? "#d35400" : "#e67e22" %>;
         }
 
         /* Profile Image Styling */
@@ -119,17 +110,31 @@
             display: flex;
             align-items: center;
         }
+
+        /* Map Container */
+        #map {
+            height: 400px;
+            width: 100%;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
     </style>
 </head>
 <body>
 
     <!-- Sidebar Navigation -->
     <div class="sidebar">
-        <a href="#" class="active">Dashboard</a>
-        <a href="#">Manage Bookings</a>
-        <a href="#">Manage Profile</a>
-        <a href="#">Notifications</a>
-        <a href="#">Settings</a>
+        <a href="user.jsp" class="active">Dashboard</a>
+        <a href="manageBooking.jsp">Manage Bookings</a>
+        <a href="profile.jsp">Manage Profile</a>
+        <a href="Settings.jsp">Settings</a>
+            <a href="printBill.jsp">Print Bill</a> <!-- Added Print Bill Option -->
+            <a href="notification.jsp" class="active">Notifications</a>
+                <a href="logout.jsp">Logout</a> <!-- Added Logout Option -->
+                    <a href="contact.jsp">Contact Us</a> <!-- Added Contact Us Option -->
+                
+            
+        
     </div>
 
     <!-- Main Content -->
@@ -159,12 +164,18 @@
         <div class="card">
             <h3 class="card-title">Manage Your Bookings</h3>
             <p>Click below to manage your bookings:</p>
-            <a href="ViewBookingsServlet" class="btn btn-custom">View Bookings</a><br>
             <a href="newBooking.jsp" class="btn btn-custom mt-2">Create New Booking</a>
+                <a href="manageBooking.jsp" class="btn btn-custom mt-2">Manage Existing Booking</a>
+                    <a href="printBill.jsp" class="btn btn-custom mt-2">Print Bill</a>
+                
+            
         </div>
 
         <!-- Map with Car Locations -->
-        <div id="map"></div>
+        <div class="card">
+            <h3 class="card-title">Your Location</h3>
+            <div id="map"></div>
+        </div>
 
         <!-- Log Out Card -->
         <div class="card">
@@ -172,11 +183,6 @@
             <a href="logout.jsp" class="btn btn-danger">Log Out</a>
         </div>
 
-    </div>
-
-    <!-- Floating Action Button -->
-    <div class="floating-btn">
-        <i class="fas fa-plus"></i>
     </div>
 
     <!-- Initialize Google Maps -->
@@ -188,9 +194,9 @@
             });
 
             var marker = new google.maps.Marker({
-                position: {lat: 6.9271, lng: 79.8612}, // Place car markers here if needed
+                position: {lat: 6.9271, lng: 79.8612}, // User's location
                 map: map,
-                title: 'Taxi Car',
+                title: 'Your Location',
             });
         }
 

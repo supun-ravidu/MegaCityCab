@@ -64,6 +64,41 @@
             background-color: #ff6600;
         }
 
+        /* Floating effect for User Guide Button */
+        .btn-floating {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #17a2b8;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-size: 1.2em;
+            text-decoration: none;
+            box-shadow: 0px 5px 15px rgba(0, 255, 255, 0.5);
+            transition: all 0.3s ease-in-out;
+            animation: floatEffect 3s infinite ease-in-out;
+        }
+
+        .btn-floating:hover {
+            background-color: #138496;
+            box-shadow: 0px 8px 20px rgba(0, 255, 255, 0.8);
+            transform: scale(1.1);
+        }
+
+        /* Floating animation */
+        @keyframes floatEffect {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-8px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
         /* Fade-in animation */
         @keyframes fadeInUp {
             0% {
@@ -121,6 +156,9 @@
             </a>
         </div>
     </div>
+
+    <!-- Floating User Guide Button -->
+    <a href="userguide.jsp" class="btn-floating"> User Guide</a>
 
     <!-- Bootstrap JS & jQuery (optional for other Bootstrap features) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>

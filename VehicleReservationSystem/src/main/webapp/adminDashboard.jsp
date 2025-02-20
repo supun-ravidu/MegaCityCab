@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,198 +7,208 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
 
-    <!-- Bootstrap 5 CSS -->
+    <!-- Bootstrap 5 & Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 
     <style>
-        /* Full Background Image */
+        /* Background Styling */
         body {
-            background-image: url('https://www.urlaubsguru.de/wp-content/uploads/2017/01/Fernglas-auf-Ellis-Island-deutete-auf-Manhattans-Skyline-an-einem-bew%C3%B6lkten-Tag-iStock-518657226.jpg');
+            background: url('https://source.unsplash.com/1600x900/?technology,city') no-repeat center center fixed;
             background-size: cover;
-            background-position: center;
-            color: black;
-            font-family: 'Arial', sans-serif;
-            padding-top: 100px;
-            padding-bottom: 100px;
-            animation: fadeIn 1.5s ease-out;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            transition: background 0.5s ease-in-out;
         }
 
-        /* Title Styling */
-        h1 {
-            text-align: center;
-            color: #ffdf00;
-            font-size: 3rem;
-            margin-bottom: 30px;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
-            animation: fadeInUp 1.5s ease-out;
-        }
-
-        h3 {
-            color: #333;
-            font-size: 1.8rem;
-            margin-bottom: 15px;
-            animation: fadeInUp 1.8s ease-out;
-        }
-
-        p {
-            font-size: 1.2rem;
-            color: #333;
-            animation: fadeInUp 2s ease-out;
-        }
-
-        a {
-            color: #007bff;
-            text-decoration: none;
-            font-size: 1.2rem;
-            transition: color 0.3s ease, transform 0.3s ease;
-        }
-
-        a:hover {
-            color: #0056b3;
-            text-decoration: underline;
-            transform: scale(1.05);
-        }
-
-        /* Card Styling for Sections */
+        /* Glassmorphism Card Style */
         .dashboard-container {
-            background-color: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 15px;
             padding: 40px;
-            width: 75%;
-            margin: 0 auto;
-            animation: fadeInUp 2s ease-out;
+            width: 85%;
+            margin: auto;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1s ease-in-out;
         }
 
+        /* Card Styling */
         .dashboard-card {
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
             padding: 20px;
             margin-bottom: 20px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            text-align: center;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .dashboard-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
         }
 
-        /* Slide-In Animation for Menu Items */
-        .menu-item {
-            opacity: 0;
-            transform: translateX(-50px);
-            animation: slideIn 0.8s ease-out forwards;
+        /* Title Styling */
+        h1 {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
         }
 
-        .menu-item:nth-child(odd) {
-            animation-delay: 0.2s;
+        /* Icon Styling */
+        .dashboard-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
         }
 
-        .menu-item:nth-child(even) {
-            animation-delay: 0.4s;
+        /* Button Style */
+        .dashboard-btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 15px;
+            border-radius: 5px;
+            background: #ffdf00;
+            color: black;
+            font-weight: bold;
+            text-decoration: none;
+            transition: background 0.3s ease-in-out;
         }
 
+        .dashboard-btn:hover {
+            background: #e6c300;
+            text-decoration: none;
+        }
+
+        /* Dark Mode Toggle */
+        .dark-mode {
+            background: #222 !important;
+            color: #fff !important;
+        }
+
+        .dark-mode .dashboard-card {
+            background: rgba(0, 0, 0, 0.3) !important;
+        }
+
+        .dark-mode .dashboard-btn {
+            background: #ff5733 !important;
+            color: white !important;
+        }
+
+        /* Animations */
         @keyframes fadeIn {
-            0% {
-                opacity: 0;
-            }
-            100% {
-                opacity: 1;
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes fadeInUp {
-            0% {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes slideIn {
-            0% {
-                opacity: 0;
-                transform: translateX(-50px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        /* Responsive Styling for Smaller Screens */
+        /* Responsive */
         @media (max-width: 768px) {
             .dashboard-container {
-                width: 90%;
-            }
-
-            h1 {
-                font-size: 2.5rem;
-            }
-
-            h3 {
-                font-size: 1.5rem;
-            }
-
-            p, a {
-                font-size: 1rem;
+                width: 95%;
             }
         }
     </style>
 </head>
 <body>
 
-    <div class="dashboard-container">
-        <!-- Title -->
-        <h1>Welcome, Admin!</h1>
-        <p>You are logged in as an admin.</p>
+    <div class="container text-center mt-4">
+        <button class="btn btn-warning" onclick="toggleDarkMode()">
+            <i class="bi bi-moon-fill"></i> Toggle Dark Mode
+        </button>
+    </div>
 
-        <!-- Manage Cars and Drivers Section -->
-        <div class="dashboard-card menu-item">
-            <h3>Manage Cars and Drivers</h3>
-            <p><a href="addCar.jsp">Add Car</a></p>
-            <p><a href="addDriver.jsp">Add Driver</a></p>
-        </div>
+    <div class="dashboard-container mt-4">
+        <h1>🚀 Admin Dashboard</h1>
 
-        <!-- Manage Users Section -->
-        <div class="dashboard-card menu-item">
-            <h3>Manage Users</h3>
-            <p><a href="viewUsers.jsp">View Users</a></p>
-        </div>
+        <div class="row">
+            <!-- Manage Cars & Drivers -->
+            <div class="col-md-4">
+                <div class="dashboard-card">
+                    <i class="bi bi-car-front dashboard-icon"></i>
+                    <h3>Manage Cars & Drivers</h3>
+                    <a href="addCar.jsp" class="dashboard-btn">Add Car</a>
+                    <a href="addDriver.jsp" class="dashboard-btn">Add Driver</a>
+                </div>
+            </div>
 
-        <!-- Manage Bookings Section -->
-        <div class="dashboard-card menu-item">
-            <h3>Manage Bookings</h3>
-            <p><a href="ViewBookingsServlet">View Bookings</a></p>
-        </div>
+            <!-- Manage Users -->
+            <div class="col-md-4">
+                <div class="dashboard-card">
+                    <i class="bi bi-people dashboard-icon"></i>
+                    <h3>Manage Users</h3>
+                    <a href="viewUsers.jsp" class="dashboard-btn">View Users</a>
+                </div>
+            </div>
 
-        <!-- Manage Cars Section -->
-        <div class="dashboard-card menu-item">
-            <h3>Manage Cars</h3>
-            <p><a href="addCar.jsp">Add Car</a></p>
-            <p><a href="ViewCarsServlet">View Cars</a></p>
-        </div>
+            <!-- Manage Bookings -->
+            <div class="col-md-4">
+                <div class="dashboard-card">
+                    <i class="bi bi-calendar-check dashboard-icon"></i>
+                    <h3>Manage Bookings</h3>
+                    <a href="ViewBookingsServlet" class="dashboard-btn">View Bookings</a>
+                </div>
+            </div>
 
-        <!-- Manage Drivers Section -->
-        <div class="dashboard-card menu-item">
-            <h3>Manage Drivers</h3>
-            <p><a href="addDriver.jsp">Add Driver</a></p>
-            <p><a href="ViewDriversServlet">View Drivers</a></p>
-        </div>
+            <!-- Manage Cars -->
+            <div class="col-md-4">
+                <div class="dashboard-card">
+                    <i class="bi bi-truck dashboard-icon"></i>
+                    <h3>Manage Cars</h3>
+                    <a href="addCar.jsp" class="dashboard-btn">Add Car</a>
+                    <a href="ViewCarsServlet" class="dashboard-btn">View Cars</a>
+                </div>
+            </div>
 
-        <!-- Log Out Section -->
-        <div class="dashboard-card menu-item">
-            <h3>Log Out</h3>
-            <p><a href="logout.jsp">Log Out</a></p>
+            <!-- Manage Drivers -->
+            <div class="col-md-4">
+                <div class="dashboard-card">
+                    <i class="bi bi-person-badge dashboard-icon"></i>
+                    <h3>Manage Drivers</h3>
+                    <a href="addDriver.jsp" class="dashboard-btn">Add Driver</a>
+                    <a href="ViewDriversServlet" class="dashboard-btn">View Drivers</a>
+                </div>
+            </div>
+
+            <!-- View Messages -->
+            <div class="col-md-4">
+                <div class="dashboard-card">
+                    <i class="bi bi-chat-dots dashboard-icon"></i>
+                    <h3>View Messages</h3>
+                    <a href="admin_messages.jsp" class="dashboard-btn">View Messages</a>
+                </div>
+            </div>
+
+            <!-- Logout -->
+            <div class="col-md-4 mx-auto">
+                <div class="dashboard-card">
+                    <i class="bi bi-box-arrow-right dashboard-icon"></i>
+                    <h3>Log Out</h3>
+                    <a href="logout.jsp" class="dashboard-btn">Log Out</a>
+                </div>
+            </div>
         </div>
     </div>
 
     <!-- Bootstrap JS and Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+
+    <!-- Dark Mode Toggle -->
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle("dark-mode");
+            localStorage.setItem("darkMode", document.body.classList.contains("dark-mode") ? "enabled" : "disabled");
+        }
+
+        // Load Dark Mode Preference
+        if (localStorage.getItem("darkMode") === "enabled") {
+            document.body.classList.add("dark-mode");
+        }
+    </script>
 
 </body>
 </html>
