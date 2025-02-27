@@ -40,78 +40,39 @@ public class ManageBookingServlet extends HttpServlet {
                 ResultSet rs = ps.executeQuery();
 
                 if (rs.next()) {
-                    request.setAttribute("booking", rs);
-                    request.getRequestDispatcher("viewBookingDetails.jsp").forward(request, response);
+                    // Set attributes for use in JSP
+                    request.setAttribute("orderNumber", rs.getString("order_number"));
+                    request.setAttribute("name", rs.getString("customer_name"));
+                    request.setAttribute("pickupLocation", rs.getString("pickup_location"));
+                    request.setAttribute("destination", rs.getString("destination"));
+                    request.setAttribute("vehicleType", rs.getString("vehicle_type"));
+                    request.setAttribute("date", rs.getString("booking_date"));
+                    request.setAttribute("time", rs.getString("booking_time"));
+                    request.setAttribute("fare", rs.getDouble("fare"));
+                    request.setAttribute("tax", rs.getDouble("tax"));
+                    request.setAttribute("totalFare", rs.getDouble("total_fare"));
+                    request.setAttribute("paymentMethod", rs.getString("payment_method"));
+                    request.setAttribute("carModel", rs.getString("car_model"));
+                    request.setAttribute("carLicensePlate", rs.getString("car_license_plate"));
+                    request.setAttribute("driverName", rs.getString("driver_name"));
+                    request.setAttribute("driverPhone", rs.getString("driver_phone"));
+
+                    request.getRequestDispatcher("manageBooking.jsp").forward(request, response);
                 } else {
                     request.setAttribute("errorMessage", "No booking found with this Order Number.");
                     request.getRequestDispatcher("manageBooking.jsp").forward(request, response);
                 }
-            } else if ("update".equals(action)) {
-                // Fetch parameters for update
-                String pickupLocation = request.getParameter("pickupLocation");
-                String destination = request.getParameter("destination");
-                String date = request.getParameter("date");
-                String time = request.getParameter("time");
-
-                // Debugging statements
-                System.out.println("Updating Booking for Order Number: " + orderNumber);
-                System.out.println("Pickup Location: " + pickupLocation);
-                System.out.println("Destination: " + destination);
-                System.out.println("Date: " + date);
-                System.out.println("Time: " + time);
-
-                // Ensure required parameters are not null or empty
-                if (pickupLocation == null || pickupLocation.trim().isEmpty()) {
-                    request.setAttribute("errorMessage", "Pickup location cannot be empty.");
-                    request.getRequestDispatcher("manageBooking.jsp").forward(request, response);
-                    return;
-                }
-
-                if (destination == null || destination.trim().isEmpty()) {
-                    request.setAttribute("errorMessage", "Destination cannot be empty.");
-                    request.getRequestDispatcher("manageBooking.jsp").forward(request, response);
-                    return;
-                }
-
-                if (date == null || date.trim().isEmpty()) {
-                    request.setAttribute("errorMessage", "Date cannot be empty.");
-                    request.getRequestDispatcher("manageBooking.jsp").forward(request, response);
-                    return;
-                }
-
-                if (time == null || time.trim().isEmpty()) {
-                    request.setAttribute("errorMessage", "Time cannot be empty.");
-                    request.getRequestDispatcher("manageBooking.jsp").forward(request, response);
-                    return;
-                }
-
-                // Update query
-                String sql = "UPDATE Bookings SET pickup_location = ?, destination = ?, booking_date = ?, booking_time = ? WHERE order_number = ?";
-                PreparedStatement ps = con.prepareStatement(sql);
-                ps.setString(1, pickupLocation);
-                ps.setString(2, destination);
-                ps.setString(3, date);
-                ps.setString(4, time);
-                ps.setString(5, orderNumber);
-
-                int rowsUpdated = ps.executeUpdate();
-                if (rowsUpdated > 0) {
-                    request.setAttribute("successMessage", "Booking updated successfully!");
-                } else {
-                    request.setAttribute("errorMessage", "Failed to update booking. Please check your order number.");
-                }
-                request.getRequestDispatcher("manageBooking.jsp").forward(request, response);
             } else if ("cancel".equals(action)) {
-                // Cancel Booking
-                String sql = "DELETE FROM Bookings WHERE order_number = ?";
-                PreparedStatement ps = con.prepareStatement(sql);
-                ps.setString(1, orderNumber);
+                // Cancel Booking - Delete the booking from the database
+                String deleteSql = "DELETE FROM Bookings WHERE order_number = ?";
+                PreparedStatement deletePs = con.prepareStatement(deleteSql);
+                deletePs.setString(1, orderNumber);
+                int rowsDeleted = deletePs.executeUpdate();
 
-                int rowsDeleted = ps.executeUpdate();
                 if (rowsDeleted > 0) {
-                    request.setAttribute("successMessage", "Booking canceled successfully!");
+                    request.setAttribute("successMessage", "Booking has been successfully canceled.");
                 } else {
-                    request.setAttribute("errorMessage", "Failed to cancel booking.");
+                    request.setAttribute("errorMessage", "Failed to cancel the booking. Please check the Order Number.");
                 }
                 request.getRequestDispatcher("manageBooking.jsp").forward(request, response);
             } else {

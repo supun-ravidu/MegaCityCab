@@ -4,6 +4,7 @@
     if (darkMode == null) {
         darkMode = false; // Default to light mode if not set
     }
+    String errorMessage = request.getParameter("error"); // Fetch error message if available
 %>
 
 <!DOCTYPE html>
@@ -71,12 +72,17 @@
             padding: 12px 20px;
             font-size: 1.1rem;
             border-radius: 5px;
-            text-align: center;
             transition: background-color 0.3s ease;
         }
 
         .btn-custom:hover {
             background-color: <%= darkMode ? "#555" : "#2980b9" %>;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 16px;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -88,19 +94,21 @@
         <a href="manageBooking.jsp">Manage Bookings</a>
         <a href="profile.jsp">Manage Profile</a>
         <a href="Settings.jsp">Settings</a>
-            <a href="printBill.jsp">Print Bill</a> <!-- Added Print Bill Option -->
-            <a href="notification.jsp" class="active">Notifications</a>
-                <a href="logout.jsp">Logout</a> <!-- Added Logout Option -->
-                    <a href="contact.jsp">Contact Us</a> <!-- Added Contact Us Option -->
-                
-            
-        
+        <a href="printBill.jsp">Print Bill</a> <!-- Added Print Bill Option -->
+        <a href="notification.jsp">Notifications</a>
+        <a href="logout.jsp">Logout</a> <!-- Added Logout Option -->
+        <a href="contact.jsp">Contact Us</a> <!-- Added Contact Us Option -->
     </div>
 
     <!-- Main Content -->
     <div class="main-content">
         <div class="card">
             <h3>Print Your Bill</h3>
+            
+            <% if (errorMessage != null) { %>
+                <p class="error-message"><%= errorMessage %></p>
+            <% } %>
+            
             <form action="PrintBillServlet" method="get">
                 <label for="orderNumber">Enter your Booking Order Number:</label><br>
                 <input type="text" name="orderNumber" class="form-control" required><br>
